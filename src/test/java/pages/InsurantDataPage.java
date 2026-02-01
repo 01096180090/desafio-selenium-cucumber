@@ -4,129 +4,102 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import support.TestContext;
 
-// Classe que representa a aba "Insurant Data"
 public class InsurantDataPage {
-    WebDriver driver;
+    private final TestContext context;
 
-    // Campos obrigatórios
     @FindBy(id = "firstname")
-    WebElement firstNameInput;
+    private WebElement firstNameInput;
 
     @FindBy(id = "lastname")
-    WebElement lastNameInput;
+    private WebElement lastNameInput;
 
     @FindBy(id = "birthdate")
-    WebElement birthDateInput;
+    private WebElement birthDateInput;
 
-    // Gênero (clicando no texto visível)
     @FindBy(xpath = "//*[text()='Male']")
-    WebElement genderMaleText;
+    private WebElement genderMaleText;
 
     @FindBy(xpath = "//*[text()='Female']")
-    WebElement genderFemaleText;
+    private WebElement genderFemaleText;
 
     @FindBy(id = "streetaddress")
-    WebElement streetAddressInput;
+    private WebElement streetAddressInput;
 
     @FindBy(id = "country")
-    WebElement countryDropdown;
+    private WebElement countryDropdown;
 
     @FindBy(id = "zipcode")
-    WebElement zipCodeInput;
+    private WebElement zipCodeInput;
 
     @FindBy(id = "city")
-    WebElement cityInput;
+    private WebElement cityInput;
 
     @FindBy(id = "occupation")
-    WebElement occupationDropdown;
+    private WebElement occupationDropdown;
 
-    // Hobbies (clicando no pai do input)
     @FindBy(xpath = "//input[@id='speeding']/..")
-    WebElement hobbySpeeding;
+    private WebElement hobbySpeeding;
 
     @FindBy(xpath = "//input[@id='bungeejumping']/..")
-    WebElement hobbyBungee;
+    private WebElement hobbyBungee;
 
     @FindBy(xpath = "//input[@id='cliffdiving']/..")
-    WebElement hobbyCliff;
+    private WebElement hobbyCliff;
 
     @FindBy(xpath = "//input[@id='skydiving']/..")
-    WebElement hobbySky;
+    private WebElement hobbySky;
 
     @FindBy(xpath = "//input[@id='other']/..")
-    WebElement hobbyOther;
+    private WebElement hobbyOther;
 
-    // Website
     @FindBy(id = "website")
-    WebElement websiteInput;
+    private WebElement websiteInput;
 
-    // Upload de imagem
     @FindBy(id = "picture")
-    WebElement pictureUpload;
+    private WebElement pictureUpload;
 
-    // Botão Next
     @FindBy(id = "nextenterproductdata")
-    WebElement nextButton;
+    private WebElement nextButton;
 
-    public InsurantDataPage(WebDriver driver) {
-        this.driver = driver;
+    public InsurantDataPage(WebDriver driver, TestContext context) {
+        this.context = context;
         PageFactory.initElements(driver, this);
     }
 
-    // Método para verificar se o campo está pronto (visível e habilitado)
-    private void safeSendKeys(WebElement element, String value) {
-        if (element.isDisplayed() && element.isEnabled()) {
-            element.sendKeys(value);
-        } else {
-            System.out.println("Elemento não está pronto para interação: " + element);
-        }
-    }
-
-    private void safeClick(WebElement element) {
-        if (element.isDisplayed() && element.isEnabled()) {
-            element.click();
-        } else {
-            System.out.println("Elemento não está pronto para clique: " + element);
-        }
-    }
-
-    // Método para preencher o formulário completo
     public void fillInsurantForm(String firstName, String lastName, String birthDate,
                                  String gender, String street, String country, String zip,
                                  String city, String occupation, String website, String picturePath) {
-        safeSendKeys(firstNameInput, firstName);
-        safeSendKeys(lastNameInput, lastName);
-        safeSendKeys(birthDateInput, birthDate);
+        context.safeSendKeys(firstNameInput, firstName);
+        context.safeSendKeys(lastNameInput, lastName);
+        context.safeSendKeys(birthDateInput, birthDate);
 
-        // Seleciona gênero dinamicamente
         if (gender.equalsIgnoreCase("male")) {
-            safeClick(genderMaleText);
+            context.safeClick(genderMaleText);
         } else {
-            safeClick(genderFemaleText);
+            context.safeClick(genderFemaleText);
         }
 
-        safeSendKeys(streetAddressInput, street);
-        safeSendKeys(countryDropdown, country);
-        safeSendKeys(zipCodeInput, zip);
-        safeSendKeys(cityInput, city);
-        safeSendKeys(occupationDropdown, occupation);
+        context.safeSendKeys(streetAddressInput, street);
+        context.safeSelectByVisibleText(countryDropdown, country);
+        context.safeSendKeys(zipCodeInput, zip);
+        context.safeSendKeys(cityInput, city);
+        context.safeSelectByVisibleText(occupationDropdown, occupation);
 
-        safeSendKeys(websiteInput, website);
-        safeSendKeys(pictureUpload, picturePath);
+        context.safeSendKeys(websiteInput, website);
+        context.safeSendKeys(pictureUpload, picturePath);
     }
 
-    // Método para selecionar hobbies dinamicamente
     public void selectHobbies(boolean speeding, boolean bungee, boolean cliff, boolean sky, boolean other) {
-        if (speeding) safeClick(hobbySpeeding);
-        if (bungee) safeClick(hobbyBungee);
-        if (cliff) safeClick(hobbyCliff);
-        if (sky) safeClick(hobbySky);
-        if (other) safeClick(hobbyOther);
+        if (speeding) context.safeClick(hobbySpeeding);
+        if (bungee) context.safeClick(hobbyBungee);
+        if (cliff) context.safeClick(hobbyCliff);
+        if (sky) context.safeClick(hobbySky);
+        if (other) context.safeClick(hobbyOther);
     }
 
-    // Avançar para a aba Product Data
     public void clickNext() {
-        safeClick(nextButton);
+        context.safeClick(nextButton);
     }
 }

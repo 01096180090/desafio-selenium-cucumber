@@ -1,67 +1,69 @@
 package steps;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.en.*;
-import pages.VehicleDataPage;
-import pages.InsurantDataPage;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+import support.TestContext;
 
 public class InsurantDataSteps {
-    WebDriver driver;
-    VehicleDataPage vehiclePage;
-    InsurantDataPage insurantPage;
+    private TestContext context;
+
+    public InsurantDataSteps(TestContext context) {
+        this.context = context;
+    }
 
     @Given("I am on the Insurant Data page")
     public void openInsurantDataPage() {
-        driver = new ChromeDriver();
-        driver.get("https://sampleapp.tricentis.com/101/app.php");
-        vehiclePage = new VehicleDataPage(driver);
-        insurantPage = new InsurantDataPage(driver);
+        context.getDriver().get("https://sampleapp.tricentis.com/101/app.php");
 
-        // Preenche Vehicle Data para chegar na aba Insurant Data
-        vehiclePage.fillVehicleForm(
-                "Audi",    // Make
-                "Scooter",       // Model
-                "1500",          // Cylinder Capacity
-                "1200",          // Engine Performance
-                "01/01/2020",    // Date of Manufacture
-                "4",             // Number of Seats
-                "2",             // Number of Seats Motorcycle
-                "Petrol",        // Fuel Type
-                "500",           // Payload
-                "1500",          // Total Weight
-                "20000",         // List Price
-                "ABC1234",       // License Plate
-                "15000",         // Annual Mileage
-                true             // Right Hand Drive
+        context.getVehiclePage().fillVehicleForm(
+                "Audi",
+                "Scooter",
+                "1500",
+                "1200",
+                "01/01/2020",
+                "4",
+                "2",
+                "Petrol",
+                "500",
+                "1500",
+                "20000",
+                "ABC1234",
+                "15000",
+                true
         );
-        vehiclePage.clickNext();
+        context.getVehiclePage().clickNext();
     }
 
     @When("I fill in the insurant information")
     public void fillInsurantInformation() {
-        insurantPage.fillInsurantForm("Marcelo", "Camargo", "01/10/1984",
+        context.getInsurantPage().fillInsurantForm(
+                "Marcelo", "Camargo", "01/10/1984",
                 "male", "Main Street 123", "Brazil", "90000",
                 "Porto Alegre", "Employee",
-                "https://www.linkedin.com/in/marcelocb/", "/path/to/pic.jpg");
-        insurantPage.selectHobbies(true, false, true, false, false); // Speeding + Cliff Diving
+                "https://www.linkedin.com/in/marcelocb/", "/path/to/pic.jpg"
+        );
+        context.getInsurantPage().selectHobbies(true, false, true, false, false);
     }
 
     @When("I proceed to the Product Data tab")
     public void proceedToProductData() {
-        insurantPage.clickNext();
+        context.getInsurantPage().clickNext();
     }
 
     @Then("I should see the Product Data page")
     public void validateProductDataPage() {
-        // Verifica se o campo da aba Product Data está visível
-        boolean isVisible = driver.findElement(By.id("startdate")).isDisplayed();
-        if (isVisible) {
-            System.out.println("Product Data form is visible!");
-        } else {
-            System.out.println("Product Data form is NOT visible!");
-        }
-        driver.quit();
+        WebDriverWait wait = new WebDriverWait(context.getDriver(), Duration.ofSeconds(10));
+        WebElement productDataForm = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("startdate"))
+        );
+
+        Assert.assertTrue("Expected Product Data form to be visible", productDataForm.isDisplayed());
+
+        context.quitDriver();
     }
 }

@@ -4,70 +4,48 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import support.TestContext;
 
-// Classe que representa a aba "Send Quote"
 public class SendQuotePage {
-    WebDriver driver;
+    private final TestContext context;
 
     @FindBy(id = "email")
-    WebElement emailInput;
+    private WebElement emailInput;
 
     @FindBy(id = "phone")
-    WebElement phoneInput;
+    private WebElement phoneInput;
 
     @FindBy(id = "username")
-    WebElement usernameInput;
+    private WebElement usernameInput;
 
     @FindBy(id = "password")
-    WebElement passwordInput;
+    private WebElement passwordInput;
 
     @FindBy(id = "confirmpassword")
-    WebElement confirmPasswordInput;
+    private WebElement confirmPasswordInput;
 
     @FindBy(id = "Comments")
-    WebElement commentsInput;
+    private WebElement commentsInput;
 
     @FindBy(id = "sendemail")
-    WebElement sendButton;
+    private WebElement sendButton;
 
-    public SendQuotePage(WebDriver driver) {
-        this.driver = driver;
+    public SendQuotePage(WebDriver driver, TestContext context) {
+        this.context = context;
         PageFactory.initElements(driver, this);
     }
 
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    private void safeSendKeys(WebElement element, String value) {
-        if (element.isDisplayed() && element.isEnabled()) {
-            element.sendKeys(value);
-        } else {
-            System.out.println("Elemento não está pronto para interação: " + element);
-        }
-    }
-
-    private void safeClick(WebElement element) {
-        if (element.isDisplayed() && element.isEnabled()) {
-            element.click();
-        } else {
-            System.out.println("Elemento não está pronto para clique: " + element);
-        }
-    }
-
-    // Preenche o formulário de Send Quote
     public void fillSendQuoteForm(String email, String phone, String username,
                                   String password, String confirmPassword, String comments) {
-        safeSendKeys(emailInput, email);
-        safeSendKeys(phoneInput, phone);
-        safeSendKeys(usernameInput, username);
-        safeSendKeys(passwordInput, password);
-        safeSendKeys(confirmPasswordInput, confirmPassword);
-        safeSendKeys(commentsInput, comments);
+        context.safeSendKeys(emailInput, email);
+        context.safeSendKeys(phoneInput, phone);
+        context.safeSendKeys(usernameInput, username);
+        context.safeSendKeys(passwordInput, password);
+        context.safeSendKeys(confirmPasswordInput, confirmPassword);
+        context.safeSendKeys(commentsInput, comments);
     }
 
-    // Envia a cotação
     public void clickSend() {
-        safeClick(sendButton);
+        context.safeClick(sendButton);
     }
 }

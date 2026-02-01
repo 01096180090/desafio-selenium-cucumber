@@ -4,62 +4,51 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import support.TestContext;
 
-// Classe que representa a aba "Select Price Option"
 public class PriceOptionPage {
-    WebDriver driver;
+    private final TestContext context;
 
-    // Planos de seguro
     @FindBy(xpath = "//input[@id='selectsilver']/..")
-    WebElement silverOption;
+    private WebElement silverOption;
 
     @FindBy(xpath = "//input[@id='selectgold']/..")
-    WebElement goldOption;
+    private WebElement goldOption;
 
     @FindBy(xpath = "//input[@id='selectplatinum']/..")
-    WebElement platinumOption;
+    private WebElement platinumOption;
 
     @FindBy(xpath = "//input[@id='selectultimate']/..")
-    WebElement ultimateOption;
+    private WebElement ultimateOption;
 
-    // Botão Next
     @FindBy(id = "nextsendquote")
-    WebElement nextButton;
+    private WebElement nextButton;
 
-    public PriceOptionPage(WebDriver driver) {
-        this.driver = driver;
+    public PriceOptionPage(WebDriver driver, TestContext context) {
+        this.context = context;
         PageFactory.initElements(driver, this);
     }
 
-    private void safeClick(WebElement element) {
-        if (element.isDisplayed() && element.isEnabled()) {
-            element.click();
-        } else {
-            System.out.println("Elemento não está pronto para clique: " + element);
-        }
-    }
-
-    // Seleciona um plano
     public void selectPlan(String plan) {
         switch (plan.toLowerCase()) {
             case "silver":
-                safeClick(silverOption);
+                context.safeClick(silverOption);
                 break;
             case "gold":
-                safeClick(goldOption);
+                context.safeClick(goldOption);
                 break;
             case "platinum":
-                safeClick(platinumOption);
+                context.safeClick(platinumOption);
                 break;
             case "ultimate":
-                safeClick(ultimateOption);
+                context.safeClick(ultimateOption);
                 break;
             default:
-                System.out.println("Plano inválido: " + plan);
+                throw new IllegalArgumentException("Plano inválido: " + plan);
         }
     }
 
     public void clickNext() {
-        safeClick(nextButton);
+        context.safeClick(nextButton);
     }
 }
