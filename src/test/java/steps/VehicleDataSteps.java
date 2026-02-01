@@ -1,56 +1,60 @@
 package steps;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.en.*;
-import pages.VehicleDataPage;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+import support.TestContext;
 
 public class VehicleDataSteps {
-    WebDriver driver;
-    VehicleDataPage vehiclePage;
+    private TestContext context;
+
+    public VehicleDataSteps(TestContext context) {
+        this.context = context;
+    }
 
     @Given("I am on the Vehicle Data page")
     public void openVehicleDataPage() {
-        driver = new ChromeDriver();
-        driver.get("https://sampleapp.tricentis.com/101/app.php");
-        vehiclePage = new VehicleDataPage(driver);
+        context.getDriver().get("https://sampleapp.tricentis.com/101/app.php");
     }
 
     @When("I fill in the vehicle information")
     public void fillVehicleInformation() {
-        vehiclePage.fillVehicleForm(
-                "Audi",    // Make
-                "Scooter",       // Model
-                "1500",          // Cylinder Capacity
-                "1200",          // Engine Performance
-                "01/01/2020",    // Date of Manufacture
-                "4",             // Number of Seats
-                "2",             // Number of Seats Motorcycle
-                "Petrol",        // Fuel Type
-                "500",           // Payload
-                "1500",          // Total Weight
-                "20000",         // List Price
-                "ABC1234",       // License Plate
-                "15000",         // Annual Mileage
-                true             // Right Hand Drive
+        context.getVehiclePage().fillVehicleForm(
+                "Audi",
+                "Scooter",
+                "1500",
+                "1200",
+                "01/01/2020",
+                "4",
+                "2",
+                "Petrol",
+                "500",
+                "1500",
+                "20000",
+                "ABC1234",
+                "15000",
+                true
         );
     }
 
     @When("I proceed to the Insurant Data tab")
     public void proceedToInsurantData() {
-        vehiclePage.clickNext();
+        context.getVehiclePage().clickNext();
     }
 
     @Then("I should see the Insurant Data form")
     public void validateInsurantDataForm() {
-        // Verifica se o campo "First Name" da aba Insurant Data está visível
-        boolean isVisible = driver.findElement(By.id("firstname")).isDisplayed();
-        if (isVisible) {
-            System.out.println("Insurant Data form is visible!");
-        } else {
-            System.out.println("Insurant Data form is NOT visible!");
-        }
-        driver.quit();
+        WebDriverWait wait = new WebDriverWait(context.getDriver(), Duration.ofSeconds(10));
+        WebElement insurantDataForm = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("firstname"))
+        );
+
+        Assert.assertTrue("Expected Insurant Data form to be visible", insurantDataForm.isDisplayed());
+
+        context.quitDriver();
     }
 }
