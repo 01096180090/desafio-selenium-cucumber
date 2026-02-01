@@ -79,11 +79,11 @@ public class PriceOptionSteps {
         }
 
         // Espera 5 segundos para visualizar antes de fechar
-        try {
+        /*try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         driver.quit();
     }

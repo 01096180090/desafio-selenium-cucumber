@@ -1,5 +1,6 @@
 package steps;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.en.*;
@@ -54,7 +55,13 @@ public class InsurantDataSteps {
 
     @Then("I should see the Product Data page")
     public void validateProductDataPage() {
-        // Aqui você pode validar se um elemento da aba Product Data está visível
+        // Verifica se o campo da aba Product Data está visível
+        boolean isVisible = driver.findElement(By.id("startdate")).isDisplayed();
+        if (isVisible) {
+            System.out.println("Product Data form is visible!");
+        } else {
+            System.out.println("Product Data form is NOT visible!");
+        }
         driver.quit();
     }
 }

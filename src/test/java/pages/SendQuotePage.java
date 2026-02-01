@@ -35,6 +35,10 @@ public class SendQuotePage {
         PageFactory.initElements(driver, this);
     }
 
+    public WebDriver getDriver() {
+        return driver;
+    }
+
     private void safeSendKeys(WebElement element, String value) {
         if (element.isDisplayed() && element.isEnabled()) {
             element.sendKeys(value);
