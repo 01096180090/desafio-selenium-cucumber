@@ -41,9 +41,6 @@ Cucumber 7.15.0
 
 PicoContainer para injeção de dependências
 
-🎥 Vídeo explicativo
-
-[Link para o vídeo explicando a solução]
 
 📌 Decisões técnicas
 
