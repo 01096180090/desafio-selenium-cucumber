@@ -6,10 +6,10 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features",   // caminho dos arquivos .feature
-        glue = {"steps", "support"},                           // pacote onde estão os Step e context
-        plugin = {"pretty", "html:target/cucumber-report.html"}, // relatórios
-        monochrome = true                           // saída mais legível no console
+        features = "src/test/resources/features",
+        glue = {"steps", "support"},
+        plugin = {"pretty", "html:target/cucumber-report.html"},
+        monochrome = true
 )
 public class TestRunner {
 }
